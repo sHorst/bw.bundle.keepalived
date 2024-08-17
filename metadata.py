@@ -9,7 +9,7 @@ defaults = {
             #     'priority': 100, # priority 100 == Master, higher will become new MASTER
             #     'advert_int': 1, # advertising interval in Sec
             #     'auth_type': 'PASS', # Password Authentication (only supported option for now)
-            #     'auth_pass': 'mysecretpass', # Password to use
+            #     'auth_pass': 'mysecretpass', # Password to use max 8 chars
             #     'virtual_ipaddress': ['192.168.0.20'], # IP address to be used
             # },
         },
@@ -24,7 +24,7 @@ defaults = {
     #             'priority': 100, # priority 100 == Master, higher will become new MASTER
     #             'advert_int': 1, # advertising interval in Sec
     #             'auth_type': 'PASS', # Password Authentication (only supported option for now)
-    #             'auth_pass': 'mysecretpass', # Password to use - will be generated from the ip and the virtual_router_id
+    #             'auth_pass': 'mysecretpass', # Password to use max 8 chars - will be generated from the ip and the virtual_router_id
     #         },
     #     },
     # },
@@ -52,7 +52,7 @@ def generate_instances_from_interfaces(metadata):
             'priority': k_conf.get('priority', 100 if k_conf.get('state', 'MASTER') == "MASTER" else 10),
             'advert_int': k_conf.get('advert_int', 1),
             'auth_type': k_conf.get('auth_type', 'PASS'),
-            'auth_pass': k_conf.get('auth_path', repo.vault.password_for('KEEPALIVED_PASSWORD_' + str(k_conf.get('virtual_router_id')) + '_' + ''.join(interface_config.get('shared_ip_addresses', [])))),
+            'auth_pass': k_conf.get('auth_path', repo.vault.password_for('KEEPALIVED_PASSWORD_' + str(k_conf.get('virtual_router_id')) + '_' + ''.join(interface_config.get('shared_ip_addresses', []))).value[:8]),
             'virtual_ipaddress': interface_config.get('shared_ip_addresses'),
         }
 
