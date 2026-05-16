@@ -80,6 +80,6 @@ def add_iptables_rules(metadata):
         iptables_rules += repo.libs.iptables.accept(). \
                 input(interface). \
                 state_new(). \
-                protocol('vrrp')
+                protocol(112)  # vrrp
 
     return iptables_rules
